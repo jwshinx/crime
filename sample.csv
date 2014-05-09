@@ -1,0 +1,4 @@
+"Case Number","Description","Date, Time","Weekday","Time","Crime Type","Police Beat","Zip Code","Address","Latitude","Longitude","Accuracy","URL"
+13-048661,"GRAND THEFT","2013-09-22 12:13:00",Sunday,"12:13",THEFT,07X,,"2300 block of San Pablo Avenue, Oakland 94612",37.814437,-122.274438,Street,"http://oakland.crimespotting.org/crime/2013-09-22/Theft/278685"
+13-047211,"THREAT CRIME:INT:TERRORIZE","2013-09-15 01:00:00",Sunday,"01:00","SIMPLE ASSAULT",25X,,"3800 block of Maybelle Avenue, Oakland 94619",37.790344,-122.192204,Street,"http://oakland.crimespotting.org/crime/2013-09-15/Simple_Assault/278636"
+13-047046,"BURGLARY-FORCIBLE ENTRY","2013-09-14 02:20:00",Saturday,"02:20",BURGLARY,20X,,"1800 block of 28th Avenue, Oakland 94601",37.783749,-122.225523,Street,"http://oakland.crimespotting.org/crime/2013-09-14/Burglary/278602"
