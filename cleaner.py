@@ -30,14 +30,20 @@ class ListCleaner:
         clean_list.append(item.replace('"', ''))
       else:  
         clean_list.append(item)
-    print("---> ListCleaner init: " + str(clean_list))
+    #print("---> ListCleaner init: " + str(clean_list))
 
-    self.crime = clean_list[0]
-    self.beat = clean_list[1]
-    self.address = clean_list[2]
-    self.lat = clean_list[3]
-    self.lon = clean_list[4]
-    self.datetime = self.to_datetime(clean_list[5])
+    self.case_number = clean_list[0]
+    self.crime = clean_list[1]
+    self.datetime = self.to_datetime(clean_list[2])
+    self.crime_type = clean_list[5]
+
+    self.beat = clean_list[6]
+    self.address = clean_list[8]
+    self.city = clean_list[9]
+    self.lat = clean_list[10]
+    self.lon = clean_list[11]
+    self.accuracy = clean_list[12]
+    self.url = clean_list[13]
 
   def remove_quotes(self, value):
     if isinstance(value, str):
