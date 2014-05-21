@@ -31,7 +31,6 @@ class ListCleaner:
       else:  
         clean_list.append(item)
     #print("---> ListCleaner init: " + str(clean_list))
-
     self.case_number = clean_list[0]
     self.crime = clean_list[1]
     self.datetime = self.to_datetime(clean_list[2])
@@ -44,7 +43,7 @@ class ListCleaner:
     self.lon = clean_list[11]
     self.accuracy = clean_list[12]
     self.url = clean_list[13]
-
+    
   def remove_quotes(self, value):
     if isinstance(value, str):
       return value.strip().replace('"', '')   
@@ -58,4 +57,16 @@ class ListCleaner:
       print("Date to string failed. " + str(err))
       return ""
 
+  def data_as_tuple(self):
+    print('---> ' + str(self.case_number, self.crime))
+    return (self.case_number, self.crime)
+
+    #return (self.case_number, self.crime, self.datetime, self.crime_type, 
+    #  self.beat, self.address, self.city, self.lat, 
+    #  self.lon, self.accuracy, self.url)
+
+  def insert_statement(self):
+    return "INSERT INTO raw_crimes (case_number, crime, datetime, crime_type, \
+      beat, address, city, lat, lon, accuracy, url) \
+      VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
    

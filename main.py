@@ -78,3 +78,8 @@ if __name__ == "__main__":
   assert lobj.lon == -122.225523
   assert lobj.datetime == datetime.datetime.strptime("2013-09-14 02:20:00","%Y-%m-%d %H:%M:%S")
   assert lobj.url == "http://oakland.crimespotting.org/crime/2013-09-14/Burglary/278602"
+  #assert lobj.data_as_tuple == ('13-047046','BURGLARY-FORCIBLE ENTRY',
+  #  "2013-09-14 02:20:00",'BURGLARY','20X','1800 block of 28th Avenue',
+  #  ' Oakland 94601','37.783749','-122.225523','Street',
+  #  'http://oakland.crimespotting.org/crime/2013-09-14/Burglary/278602')
+  #print( str(lobj.data_as_tuple))
