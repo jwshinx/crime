@@ -7,7 +7,6 @@ import cleaner
 import datetime
 import re
 
-"""
 def get_connection():
   conn = boto.rds.connect_to_region(
     os.getenv('JWS_AWS_RDS_REGION')
@@ -26,10 +25,11 @@ def get_cursor():
   connection = get_connection()
   cursor = connection.cursor(buffered=True)  
   return cursor, connection
-"""
+
 
 try:
   with open('sample.csv','r') as data:
+    cur, cnx = get_cursor()
     for each_line in data:
       values = each_line.split(',')
       
@@ -39,7 +39,10 @@ try:
         print("")
       else:
         obj = cleaner.ListCleaner(values)
-        print(str(obj.__dict__))
+        #print(str(obj.__dict__))
+        #print(obj.city)
+        #print(obj.data_as_tuple())
+        cur.execute(obj.insert_statement(), obj.data_as_tuple())
         print("")
       
         #for i in range(len(values)):
@@ -49,8 +52,9 @@ try:
     #cur, conn = get_cursor()
     #print(str(cur))
     #print(str(conn))
-    #cur.close()
-    #conn.close()
+    cnx.commit()
+    cur.close()
+    cnx.close()
 except IOError as err:
   print("An error! " + str(err))
 
@@ -78,8 +82,10 @@ if __name__ == "__main__":
   assert lobj.lon == -122.225523
   assert lobj.datetime == datetime.datetime.strptime("2013-09-14 02:20:00","%Y-%m-%d %H:%M:%S")
   assert lobj.url == "http://oakland.crimespotting.org/crime/2013-09-14/Burglary/278602"
-  #assert lobj.data_as_tuple == ('13-047046','BURGLARY-FORCIBLE ENTRY',
-  #  "2013-09-14 02:20:00",'BURGLARY','20X','1800 block of 28th Avenue',
-  #  ' Oakland 94601','37.783749','-122.225523','Street',
-  #  'http://oakland.crimespotting.org/crime/2013-09-14/Burglary/278602')
+  #assert lobj.data_as_tuple == \
+  #('13-047046', 'BURGLARY-FORCIBLE ENTRY', datetime.datetime(2013, 9, 14, 2, 20), 'BURGLARY', '20X', '1800 block of 28th Avenue', ' Oakland 94601', '37.783749', '-122.225523', 'Street', 'http://oakland.crimespotting.org/crime/2013-09-14/Burglary/278602\n')
+    #('13-047046', 'BURGLARY-FORCIBLE ENTRY',
+    #datetime.datetime(2013, 9, 14, 2, 20),'BURGLARY','20X','1800 block of 28th Avenue',
+    #' Oakland 94601','37.783749','-122.225523','Street',
+    #'http://oakland.crimespotting.org/crime/2013-09-14/Burglary/278602\n')
   #print( str(lobj.data_as_tuple))
