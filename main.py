@@ -31,17 +31,11 @@ try:
   fmt = '%Y-%m-%d %H:%M:%S %Z'
   cur, cnx = get_cursor()
   with open('logs/raw_crimes_inserter.log', 'a') as log_file:
-    #for line in reader('data/sample-data.csv'):
-    #with open('data/sample-data.csv','r') as infile:
     with open('data/crime-data.csv','r') as infile:
       data_reader = reader(infile, delimiter=',', quotechar='"')
       for row in data_reader:
-        #values = each_line.split(',')      
-        #match = re.search(r'Case Number', values[0])
         match = re.search(r'Case Number', row[0])
-
         if not match:
-          #print(str(row))                      
           obj = cleaner.ListCleaner(row)
           curr_time = datetime.datetime.now()
           log_file.write(str(curr_time.strftime(fmt)) + 
