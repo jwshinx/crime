@@ -38,11 +38,11 @@ class ListCleaner:
 
     self.beat = clean_list[6]
     self.address = clean_list[8]
-    self.city = clean_list[9]
-    self.lat = clean_list[10]
-    self.lon = clean_list[11]
-    self.accuracy = clean_list[12]
-    self.url = clean_list[13]
+    self.city = clean_list[7]
+    self.lat = clean_list[9]
+    self.lon = clean_list[10]
+    self.accuracy = clean_list[11]
+    self.url = clean_list[12]
     
   def remove_quotes(self, value):
     if isinstance(value, str):

@@ -6,6 +6,7 @@ import os
 import cleaner
 import datetime
 import re
+from csv import reader
 
 def get_connection():
   conn = boto.rds.connect_to_region(
@@ -28,22 +29,27 @@ def get_cursor():
 
 try:
   fmt = '%Y-%m-%d %H:%M:%S %Z'
+  cur, cnx = get_cursor()
   with open('logs/raw_crimes_inserter.log', 'a') as log_file:
-    with open('data/sample-data.csv','r') as data:
-      #with open('data/crime-data.csv','r') as data:
-      cur, cnx = get_cursor()
-      for each_line in data:
-        values = each_line.split(',')      
-        match = re.search(r'Case Number', values[0])
-        if not match:                      
-          obj = cleaner.ListCleaner(values)
+    #for line in reader('data/sample-data.csv'):
+    #with open('data/sample-data.csv','r') as infile:
+    with open('data/crime-data.csv','r') as infile:
+      data_reader = reader(infile, delimiter=',', quotechar='"')
+      for row in data_reader:
+        #values = each_line.split(',')      
+        #match = re.search(r'Case Number', values[0])
+        match = re.search(r'Case Number', row[0])
+
+        if not match:
+          #print(str(row))                      
+          obj = cleaner.ListCleaner(row)
           curr_time = datetime.datetime.now()
           log_file.write(str(curr_time.strftime(fmt)) + 
             str(obj.case_number) + ' : ' + str(obj.datetime) + '\n')
           cur.execute(obj.insert_statement(), obj.data_as_tuple())      
-      cnx.commit()
-      cur.close()
-      cnx.close()
+  cnx.commit()
+  cur.close()
+  cnx.close()
 
 except IOError as err:
   print("An error! " + str(err))
@@ -57,15 +63,16 @@ if __name__ == "__main__":
   lobj = cleaner.ListCleaner(
     [
       "13-047046", "BURGLARY-FORCIBLE ENTRY", "2013-09-14 02:20:00",
-      "Saturday", "02:20", "BURGLARY", "20X", "", "1800 block of 28th Avenue",
-      "Oakland 94601", 37.783749, -122.225523,
+      "Saturday", "02:20", "BURGLARY", "20X", "90099", "1800 block of 28th Avenue",
+      37.783749, -122.225523,
       "Street", "http://oakland.crimespotting.org/crime/2013-09-14/Burglary/278602"
     ])
 
   assert lobj.case_number == "13-047046"
   assert lobj.crime_type == 'BURGLARY'
   assert lobj.crime == "BURGLARY-FORCIBLE ENTRY"
-  assert lobj.city == "Oakland 94601"
+  assert lobj.address == "1800 block of 28th Avenue"
+  assert lobj.city == "90099"
   assert lobj.accuracy == "Street"
   assert lobj.beat == "20X"
   assert lobj.lat == 37.783749
