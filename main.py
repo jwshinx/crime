@@ -7,7 +7,6 @@ import cleaner
 import datetime
 import re
 
-"""
 def get_connection():
   conn = boto.rds.connect_to_region(
     os.getenv('JWS_AWS_RDS_REGION')
@@ -26,31 +25,26 @@ def get_cursor():
   connection = get_connection()
   cursor = connection.cursor(buffered=True)  
   return cursor, connection
-"""
 
 try:
-  with open('sample.csv','r') as data:
-    for each_line in data:
-      values = each_line.split(',')
-      
-      match = re.search(r'Case Number', values[0])
-      if match:                      
-        print 'found', match.group() ## 'found word:cat'
-        print("")
-      else:
-        obj = cleaner.ListCleaner(values)
-        print(str(obj.__dict__))
-        print("")
-      
-        #for i in range(len(values)):
-        #  print(str(i+1) + ". " + str(values[i]))
-        #  print("")
-      
-    #cur, conn = get_cursor()
-    #print(str(cur))
-    #print(str(conn))
-    #cur.close()
-    #conn.close()
+  fmt = '%Y-%m-%d %H:%M:%S %Z'
+  with open('logs/raw_crimes_inserter.log', 'a') as log_file:
+    with open('data/sample-data.csv','r') as data:
+      #with open('data/crime-data.csv','r') as data:
+      cur, cnx = get_cursor()
+      for each_line in data:
+        values = each_line.split(',')      
+        match = re.search(r'Case Number', values[0])
+        if not match:                      
+          obj = cleaner.ListCleaner(values)
+          curr_time = datetime.datetime.now()
+          log_file.write(str(curr_time.strftime(fmt)) + 
+            str(obj.case_number) + ' : ' + str(obj.datetime) + '\n')
+          cur.execute(obj.insert_statement(), obj.data_as_tuple())      
+      cnx.commit()
+      cur.close()
+      cnx.close()
+
 except IOError as err:
   print("An error! " + str(err))
 

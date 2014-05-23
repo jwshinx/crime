@@ -58,15 +58,23 @@ class ListCleaner:
       return ""
 
   def data_as_tuple(self):
-    print('---> ' + str(self.case_number, self.crime))
-    return (self.case_number, self.crime)
-
-    #return (self.case_number, self.crime, self.datetime, self.crime_type, 
-    #  self.beat, self.address, self.city, self.lat, 
-    #  self.lon, self.accuracy, self.url)
+    #print('---> ' + str(self.case_number, self.crime))
+    #return (self.case_number, self.crime)
+    return (self.case_number, self.crime, self.datetime, self.crime_type, 
+      self.beat, self.address, self.city, self.lat, 
+      self.lon, self.accuracy, self.url, 0, datetime.datetime.now(),
+      datetime.datetime.now())
 
   def insert_statement(self):
-    return "INSERT INTO raw_crimes (case_number, crime, datetime, crime_type, \
-      beat, address, city, lat, lon, accuracy, url) \
-      VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    #return "INSERT INTO raw_crimes (case_number, crime, datetime, crime_type, \
+    #  beat, address, city, lat, lon, accuracy, url) \
+    #  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+    return "INSERT INTO raw_crimes (case_number, description, timestamp, crime_type, \
+      beat, address_description, zip, latitude, longitude, accuracy, url, \
+      processed, created_at, updated_at) \
+      VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+ 
+
+
    
