@@ -28,7 +28,8 @@ def get_cursor():
     return cursor, connection
 
 try:
-    with open('logs/zip_updater.log', 'a') as log_file:
+    app_dir = os.getcwd()
+    with open(app_dir + '/logs/zip_updater.log', 'a') as log_file:
         fmt = '%Y-%m-%d %H:%M:%S %Z'
         cnx = get_connection()
         cur = cnx.cursor(buffered=True)  
